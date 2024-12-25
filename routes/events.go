@@ -25,7 +25,7 @@ func getEvent(c *gin.Context) {
 
 	event, err := models.GetEventById(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get event"})
+		c.JSON(http.StatusNotFound, gin.H{"error": "could not get event"})
 		return
 	}
 	c.JSON(http.StatusOK, event)
@@ -44,4 +44,54 @@ func createEvent(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{"message": "created", "event": event})
+}
+
+func updateEvent(c *gin.Context) {
+
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not parse id"})
+		return
+	}
+
+	_, err = models.GetEventById(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get event"})
+		return
+	}
+
+	var updatedEvent models.Event
+	err = c.ShouldBindJSON(&updatedEvent)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not parse data"})
+		return
+	}
+
+	updatedEvent.ID = id
+	err = updatedEvent.Update()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not updated event "})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "updated", "event": updatedEvent})
+}
+
+func deleteEvent(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "could not parse id"})
+		return
+	}
+
+	event, err := models.GetEventById(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "could not get event"})
+	}
+	err = event.Delete()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not remove event"})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, gin.H{"message": "deleted"})
 }
