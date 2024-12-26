@@ -19,6 +19,8 @@ This project uses:
   -  Golang: The core programming language for building the API.
   -  Gin Framework: For handling HTTP requests and creating a lightweight yet powerful web server.
   -  SQLite: A simple, file-based relational database to store user, event, and reservation data.
+  -  JWT: for handlin user authentications.
+  -  Bcrypt: for hashing users passwords.
 
 Getting Started
 
@@ -46,14 +48,13 @@ Run the application:
 
 ### Events
 
-    POST /events: Create a new event.
-    GET /events: Retrieve all events.
-    GET /events/:id: Retrieve details of a specific event.
-    PUT /events/:id: Update an event.
-    DELETE /events/:id: Delete an event.
+    POST /events Create a new event.
+    GET /events Retrieve all events.
+    GET /events/:id Retrieve details of a specific event.
+    PUT /events/:id Update an event.
+    DELETE /events/:id Delete an event.
 
 ### Reservations
 
-    POST /reservations: Create a reservation for an event.
-    GET /reservations: Retrieve all reservations.
-    DELETE /reservations/:id: Cancel a reservation.
+    POST events/:id/register Create a reservation for an event.
+    DELETE events/:id/register Cancel a reservation.
