@@ -37,8 +37,7 @@ func createEvent(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not bind json"})
 		return
 	}
-	event.UserID = 1
-
+	event.UserID = c.MustGet("id").(int64)
 	if err := event.Save(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not save event"})
 		return
@@ -54,9 +53,14 @@ func updateEvent(c *gin.Context) {
 		return
 	}
 
-	_, err = models.GetEventById(id)
+	event, err := models.GetEventById(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not get event"})
+		return
+	}
+
+	if event.UserID != c.MustGet("id").(int64) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "you are not the owner of this event"})
 		return
 	}
 
@@ -68,6 +72,7 @@ func updateEvent(c *gin.Context) {
 	}
 
 	updatedEvent.ID = id
+
 	err = updatedEvent.Update()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not updated event "})
@@ -86,6 +91,11 @@ func deleteEvent(c *gin.Context) {
 	event, err := models.GetEventById(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "could not get event"})
+	}
+	// Check if the user is the owner of the event
+	if event.UserID != c.MustGet("id").(int64) {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "you are not the owner of this event"})
+		return
 	}
 	err = event.Delete()
 	if err != nil {
