@@ -1,4 +1,4 @@
-package routes
+package middleware
 
 import (
 	"net/http"
@@ -7,9 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Middleware() gin.HandlerFunc {
+func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		key := c.GetHeader("Auth")
 		s, err := utils.JwtParse(key)
 		if err != nil {
