@@ -1,6 +1,8 @@
 # Events-Registrations REST API
 
 A RESTful API that allows users to manage events and reservations with ease.
+For now, the project is complete, and I do not plan to update it anytime soon.
+
 ## Features
 
 Users can:
