@@ -1,6 +1,7 @@
 # Events-Registrations REST API
 
 A RESTful API that allows users to manage events and reservations with ease.
+
 For now, the project is complete, and I do not plan to update it anytime soon.
 
 ## Features
@@ -21,7 +22,7 @@ This project uses:
   -  Golang: The core programming language for building the API.
   -  Gin Framework: For handling HTTP requests and creating a lightweight yet powerful web server.
   -  SQLite: A simple, file-based relational database to store user, event, and reservation data.
-  -  JWT: for handlin user authentications.
+  -  JWT: for handling user authentications.
   -  Bcrypt: for hashing users passwords.
 
 Getting Started
