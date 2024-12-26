@@ -7,7 +7,8 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// change to .env later and make new key
+// IMPORTANT: This should be in a .env file,
+// i will not do this since in this project is not important
 var Key = []byte("jlsdjfalskdjflskdjfkey")
 
 func JwtNew(id int64, email string) (string, error) {
